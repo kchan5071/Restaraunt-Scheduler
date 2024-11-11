@@ -11,6 +11,7 @@
 #include "seating.h"
 #include "producer.h"
 #include "consumer.h"
+#include "log_helper.h"
 
 
 #define DEFAULT_MAX_PRODUCTIONS 120
@@ -70,16 +71,17 @@ Thread_Args parse_args(int argc, char* argv[]) {
 int main(int argc, char* argv[]) {
     Monitor mon;
     Thread_Args args = parse_args(argc, argv);
+    Log_Helper log_helper(&mon);
 
     pthread_t general_producer_thread;
     pthread_t vip_producer_thread;
     pthread_t t_x_consumer_thread;
     pthread_t rev_9_consumer_thread;
 
-    Producer general_producer(&mon, args.general_table_production_time, GeneralTable);
-    Producer vip_producer(&mon, args.vip_room_production_time, VIPRoom);
-    Consumer t_x_consumer(&mon, args.t_x_consumption_time, TX);
-    Consumer rev_9_consumer(&mon, args.rev_9_consumption_time, Rev9);
+    Producer general_producer(&mon, &log_helper, args.general_table_production_time, GeneralTable);
+    Producer vip_producer(&mon, &log_helper, args.vip_room_production_time, VIPRoom);
+    Consumer t_x_consumer(&mon, &log_helper, args.t_x_consumption_time, TX);
+    Consumer rev_9_consumer(&mon, &log_helper, args.rev_9_consumption_time, Rev9);
 
     pthread_create(&general_producer_thread, NULL, Producer::start_produce, &general_producer);
     pthread_create(&vip_producer_thread, NULL, Producer::start_produce, &vip_producer);
@@ -91,5 +93,6 @@ int main(int argc, char* argv[]) {
     pthread_join(t_x_consumer_thread, NULL);
     pthread_join(rev_9_consumer_thread, NULL);
 
+    // log_helper.history();
     return 0;
 }

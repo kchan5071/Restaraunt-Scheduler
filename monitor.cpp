@@ -32,14 +32,15 @@ void Monitor::produce_item(RequestType type) {
     pthread_mutex_unlock(&mutex);
 }
 
-void Monitor::consume_item() {
+RequestType Monitor::consume_item() {
     pthread_mutex_lock(&mutex);
     while (buffer.empty()) {
         pthread_cond_wait(&cond, &mutex);
     }
-    consume();
+    RequestType type = consume();
     pthread_cond_signal(&cond);
     pthread_mutex_unlock(&mutex);
+    return type;
 }
 
 void Monitor::produce(RequestType type) {
@@ -50,13 +51,14 @@ void Monitor::produce(RequestType type) {
     produced++;
 }
 
-void Monitor::consume() {
+RequestType Monitor::consume() {
     Seating_Request request = buffer.front();
     buffer.pop();
     printf("Consumed %s\n", producerAbbrevs[request.type]);
     if (request.type == VIPRoom) {
         current_VIP--;
     }
+    return request.type;
 }
 
 bool Monitor::is_finished() {
@@ -65,4 +67,8 @@ bool Monitor::is_finished() {
 
 bool Monitor::is_full() {
     return buffer.size() >= MAX_SEATING_REQUESTS;
+}
+
+std::queue<Seating_Request> Monitor::get_buffer() {
+    return buffer;
 }

@@ -34,15 +34,17 @@ public:
 
     void produce_item(RequestType type);
 
-    void consume_item();
+    RequestType consume_item();
 
     void produce(RequestType type);
 
-    void consume();
+    RequestType consume();
 
     bool is_finished();
 
     bool is_full();
+
+    std::queue<Seating_Request> get_buffer();
 };
 
 #endif
