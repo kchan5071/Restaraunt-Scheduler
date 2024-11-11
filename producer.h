@@ -2,16 +2,17 @@
 #define PRODUCER_H
 
 #include "monitor.h"
+#include "seating.h"
 
 
 class Producer {
 protected:
     Monitor* mon;
-    std::string type;
+    RequestType type;
     int production_time;
 
 public:
-    Producer(Monitor* mon, int production_time, std::string type);
+    Producer(Monitor* mon, int production_time, RequestType type);
 
     void produce();
 

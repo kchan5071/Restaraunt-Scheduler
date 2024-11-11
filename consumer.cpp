@@ -1,6 +1,6 @@
 #include "consumer.h"
 
-Consumer::Consumer(Monitor* mon, int consumption_time, std::string type) {
+Consumer::Consumer(Monitor* mon, int consumption_time, Consumers type) {
     this->mon = mon;
     this->consumption_time = consumption_time;
     this->type = type;

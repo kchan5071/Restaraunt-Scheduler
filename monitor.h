@@ -5,13 +5,14 @@
 #include <pthread.h>
 #include <string>
 #include <unistd.h>
+#include "seating.h"
 
 #define DEFAULT_MAX_PRODUCTIONS 120
 #define MAX_SEATING_REQUESTS 18
 #define MAX_VIP_REQUESTS 5
 
 typedef struct Seating_Request {
-    std::string type;
+    RequestType type;
 } Seating_Request;
 
 class Monitor {
@@ -31,11 +32,11 @@ public:
 
     ~Monitor();
 
-    void produce_item(std::string type);
+    void produce_item(RequestType type);
 
     void consume_item();
 
-    void produce(std::string type);
+    void produce(RequestType type);
 
     void consume();
 

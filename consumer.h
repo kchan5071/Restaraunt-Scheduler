@@ -2,16 +2,17 @@
 #define CONSUMER_H
 
 #include "monitor.h"
+#include "seating.h"
 
 class Consumer {
 protected:
     Monitor* mon;
-    std::string type;
+    Consumers type;
     int consumption_time;
 
 
 public:
-    Consumer(Monitor* mon, int consumption_time, std::string type);
+    Consumer(Monitor* mon, int consumption_time, Consumers type);
 
     void consume();
 
