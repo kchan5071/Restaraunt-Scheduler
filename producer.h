@@ -3,9 +3,6 @@
 
 #include "monitor.h"
 #include "seating.h"
-#include "log_helper.h"
-#include <thread>
-#include <chrono>
 
 class Producer
 {
@@ -13,10 +10,9 @@ protected:
     Monitor *mon;
     RequestType type;
     int production_time;
-    Log_Helper *log_helper;
 
 public:
-    Producer(Monitor *mon, Log_Helper *log_helper, int production_time, RequestType type);
+    Producer(Monitor *mon, int production_time, RequestType type);
 
     void produce();
 

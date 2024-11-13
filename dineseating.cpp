@@ -10,7 +10,6 @@
 #include "seating.h"
 #include "producer.h"
 #include "consumer.h"
-#include "log_helper.h"
 
 #define DEFAULT_MAX_PRODUCTIONS 120
 #define DEFAULT_PRODUCTION_TIME 0
@@ -80,10 +79,10 @@ int main(int argc, char *argv[])
     pthread_t t_x_consumer_thread;
     pthread_t rev_9_consumer_thread;
 
-    Producer general_producer(&mon, NULL, args.general_table_production_time, GeneralTable);
-    Producer vip_producer(&mon, NULL, args.vip_room_production_time, VIPRoom);
-    Consumer t_x_consumer(&mon, NULL, args.t_x_consumption_time, TX);
-    Consumer rev_9_consumer(&mon, NULL, args.rev_9_consumption_time, Rev9);
+    Producer general_producer(&mon, args.general_table_production_time, GeneralTable);
+    Producer vip_producer(&mon, args.vip_room_production_time, VIPRoom);
+    Consumer t_x_consumer(&mon, args.t_x_consumption_time, TX);
+    Consumer rev_9_consumer(&mon, args.rev_9_consumption_time, Rev9);
 
     pthread_create(&general_producer_thread, NULL, Producer::start_produce, &general_producer);
     pthread_create(&vip_producer_thread, NULL, Producer::start_produce, &vip_producer);

@@ -1,9 +1,8 @@
 #include "consumer.h"
 
-Consumer::Consumer(Monitor *mon, Log_Helper *log_helper, int consumption_time, Consumers type)
+Consumer::Consumer(Monitor *mon, int consumption_time, Consumers type)
 {
     this->mon = mon;
-    this->log_helper = log_helper;
     this->consumption_time = consumption_time;
     this->type = type;
     mon->init_consumption_info_of_thread(type);
