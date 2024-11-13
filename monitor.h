@@ -24,6 +24,7 @@ private:
     int max_productions;
     int produced;
     int current_VIP;
+    int waiting_producers;
 
 public:
     Monitor();
@@ -42,7 +43,7 @@ public:
 
     bool is_finished();
 
-    bool is_empty();
+    bool buffer_empty();
 
     bool is_full();
 

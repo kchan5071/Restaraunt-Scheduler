@@ -9,11 +9,11 @@ compile:
 	g++ -std=c++11 dineseating.cpp producer.o consumer.o monitor.o log.o log_helper.o -o dineseating -g -pthread
 
 clean:
-	rm -f *.o
+	rm -f dineseating
 
 run:
 	make clean
 	make compile
-	./dineseating -s 100 -x 20 -r 35 -g 15 -v 10
+	./dineseating -s 100 -x 23 -r 31 -g 15 -v 10
 	make clean
 

@@ -6,6 +6,7 @@ Monitor::Monitor(int max_productions) {
     this->max_productions = max_productions;
     current_VIP = 0;
     produced = 0;
+    waiting_producers = 0;
 }
 
 Monitor::~Monitor() {
@@ -15,9 +16,10 @@ Monitor::~Monitor() {
 
 void Monitor::produce_item(RequestType type) {
     pthread_mutex_lock(&mutex);
-    while (is_full() || 
-          (type == VIPRoom && current_VIP >= MAX_VIP_REQUESTS)) {
+    while (is_full() || (type == VIPRoom && current_VIP >= MAX_VIP_REQUESTS)) {
+        waiting_producers++;
         pthread_cond_wait(&cond, &mutex);
+        waiting_producers--;
     }
     if (type == VIPRoom) {
         current_VIP++;
@@ -29,8 +31,12 @@ void Monitor::produce_item(RequestType type) {
 
 RequestType Monitor::consume_item() {
     pthread_mutex_lock(&mutex);
-    while (buffer.empty() && !is_finished()) {
+    while (buffer_empty()) {
         pthread_cond_wait(&cond, &mutex);
+        if (buffer_empty() && is_finished()) {
+            pthread_mutex_unlock(&mutex);
+            return RequestTypeN;
+        }
     }
     RequestType type = consume();
     pthread_cond_signal(&cond);
@@ -55,7 +61,7 @@ RequestType Monitor::consume() {
 }
 
 bool Monitor::is_finished() {
-    return produced >= max_productions;
+    return produced >= max_productions - waiting_producers;
 }
 
 int Monitor::get_produced() {
@@ -66,7 +72,7 @@ int Monitor::get_current_VIP() {
     return current_VIP;
 }
 
-bool Monitor::is_empty() {
+bool Monitor::buffer_empty() {
     return buffer.empty();
 }
 

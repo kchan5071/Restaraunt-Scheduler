@@ -8,12 +8,12 @@ Producer::Producer(Monitor* mon, Log_Helper* log_helper, int production_time, Re
 }
 
 void Producer::produce() {
-    do {
+    while (!this->mon->is_finished()) {
         this->mon->produce_item(this->type);
         log_helper->request_added(this->type, this->type);
         usleep(production_time * microseconds_to_milliseconds);
     } 
-    while ((!this->mon->is_finished()));
+    
 }
 
 void* Producer::start_produce(void* arg) {
