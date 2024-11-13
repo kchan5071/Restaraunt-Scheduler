@@ -1,17 +1,11 @@
 #include "monitor.h"
 
-Monitor::Monitor() {
-    pthread_mutex_init(&mutex, NULL);
-    pthread_cond_init(&cond, NULL);
-    max_productions = DEFAULT_MAX_PRODUCTIONS;
-    produced = 0;
-    current_VIP = 0;
-}
-
 Monitor::Monitor(int max_productions) {
     pthread_mutex_init(&mutex, NULL);
     pthread_cond_init(&cond, NULL);
     this->max_productions = max_productions;
+    current_VIP = 0;
+    produced = 0;
 }
 
 Monitor::~Monitor() {
@@ -21,7 +15,8 @@ Monitor::~Monitor() {
 
 void Monitor::produce_item(RequestType type) {
     pthread_mutex_lock(&mutex);
-    while (is_full() || (type == VIPRoom && current_VIP >= MAX_VIP_REQUESTS)) {
+    while (is_full() || 
+          (type == VIPRoom && current_VIP >= MAX_VIP_REQUESTS)) {
         pthread_cond_wait(&cond, &mutex);
     }
     if (type == VIPRoom) {
@@ -34,7 +29,7 @@ void Monitor::produce_item(RequestType type) {
 
 RequestType Monitor::consume_item() {
     pthread_mutex_lock(&mutex);
-    while (buffer.empty()) {
+    while (buffer.empty() && !is_finished()) {
         pthread_cond_wait(&cond, &mutex);
     }
     RequestType type = consume();
@@ -47,14 +42,12 @@ void Monitor::produce(RequestType type) {
     Seating_Request request;
     request.type = type;
     buffer.push(request);
-    printf("Produced %s\n", producerAbbrevs[type]);
     produced++;
 }
 
 RequestType Monitor::consume() {
     Seating_Request request = buffer.front();
     buffer.pop();
-    printf("Consumed %s\n", producerAbbrevs[request.type]);
     if (request.type == VIPRoom) {
         current_VIP--;
     }
@@ -63,6 +56,18 @@ RequestType Monitor::consume() {
 
 bool Monitor::is_finished() {
     return produced >= max_productions;
+}
+
+int Monitor::get_produced() {
+    return produced;
+}
+
+int Monitor::get_current_VIP() {
+    return current_VIP;
+}
+
+bool Monitor::is_empty() {
+    return buffer.empty();
 }
 
 bool Monitor::is_full() {

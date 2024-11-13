@@ -13,7 +13,7 @@ extern "C" {
 class Log_Helper {
     private:
         std::vector<unsigned int> produced;
-        std::vector<unsigned int> consumed;
+        std::vector<std::vector<unsigned int>> consumed;
         std::vector<unsigned int> inRequestQueue;
         Monitor* monitor;
 
@@ -21,7 +21,7 @@ class Log_Helper {
 
     public:
         Log_Helper(Monitor* monitor);
-        void request_added(RequestType request_type);
+        void request_added(RequestType request_type, int producer);
         void request_removed(Consumers consumer, RequestType request_type);
         void history();
 };

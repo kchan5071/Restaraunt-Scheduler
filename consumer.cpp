@@ -8,10 +8,10 @@ Consumer::Consumer(Monitor* mon, Log_Helper* log_helper, int consumption_time, C
 }
 
 void Consumer::consume() {
-    while (!this->mon->is_finished()) {
+    while (!mon->is_empty() || !mon->is_finished()) {
         RequestType returned_type = mon->consume_item();
         log_helper->request_removed(this->type, returned_type);
-        sleep(consumption_time);
+        usleep(consumption_time * microseconds_to_milliseconds);
     }
 }
 

@@ -69,8 +69,9 @@ Thread_Args parse_args(int argc, char* argv[]) {
 }
 
 int main(int argc, char* argv[]) {
-    Monitor mon;
     Thread_Args args = parse_args(argc, argv);
+
+    Monitor mon = Monitor(args.max_productions);
     Log_Helper log_helper(&mon);
 
     pthread_t general_producer_thread;

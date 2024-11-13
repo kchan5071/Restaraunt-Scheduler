@@ -7,9 +7,9 @@
 #include <unistd.h>
 #include "seating.h"
 
-#define DEFAULT_MAX_PRODUCTIONS 120
 #define MAX_SEATING_REQUESTS 18
 #define MAX_VIP_REQUESTS 5
+#define microseconds_to_milliseconds 1000
 
 typedef struct Seating_Request {
     RequestType type;
@@ -42,7 +42,13 @@ public:
 
     bool is_finished();
 
+    bool is_empty();
+
     bool is_full();
+
+    int get_produced();
+
+    int get_current_VIP();
 
     std::queue<Seating_Request> get_buffer();
 };

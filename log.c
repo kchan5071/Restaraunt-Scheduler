@@ -111,7 +111,7 @@ void output_request_added(RequestType requestType,
   }
   /* total produced over how long */
   printf(" = %d in %.3f s.\n", total, elapsed_s());
-  //printf(" = %d\n", total);
+  // printf(" = %d\n", total);
 
   /* This is not really needed, but will be helpful for making sure that you
    * see output prior to a segmentation vioilation.  This is not usually a
