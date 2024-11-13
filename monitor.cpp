@@ -1,30 +1,33 @@
 #include "monitor.h"
 
-Monitor::Monitor() {
-    pthread_mutex_init(&mutex, NULL);
-    pthread_cond_init(&cond, NULL);
-    max_productions = DEFAULT_MAX_PRODUCTIONS;
-    produced = 0;
-    current_VIP = 0;
-}
-
-Monitor::Monitor(int max_productions) {
+Monitor::Monitor(int max_productions)
+{
     pthread_mutex_init(&mutex, NULL);
     pthread_cond_init(&cond, NULL);
     this->max_productions = max_productions;
+    total_produced = 0;
+    total_consumed = 0;
+    consumed = new unsigned int *[2];
+    produced = new unsigned int[2]{0, 0};
+    in_request_queue = new unsigned int[2]{0, 0};
+    current_VIP = 0;
 }
 
-Monitor::~Monitor() {
+Monitor::~Monitor()
+{
     pthread_mutex_destroy(&mutex);
     pthread_cond_destroy(&cond);
 }
 
-void Monitor::produce_item(RequestType type) {
+void Monitor::produce_item(RequestType type)
+{
     pthread_mutex_lock(&mutex);
-    while (is_full() || (type == VIPRoom && current_VIP >= MAX_VIP_REQUESTS)) {
+    while (is_full() || (type == VIPRoom && current_VIP >= MAX_VIP_REQUESTS))
+    {
         pthread_cond_wait(&cond, &mutex);
     }
-    if (type == VIPRoom) {
+    if (type == VIPRoom)
+    {
         current_VIP++;
     }
     produce(type);
@@ -32,9 +35,11 @@ void Monitor::produce_item(RequestType type) {
     pthread_mutex_unlock(&mutex);
 }
 
-RequestType Monitor::consume_item() {
+RequestType Monitor::consume_item()
+{
     pthread_mutex_lock(&mutex);
-    while (buffer.empty()) {
+    while (buffer.empty())
+    {
         pthread_cond_wait(&cond, &mutex);
     }
     RequestType type = consume();
@@ -43,32 +48,77 @@ RequestType Monitor::consume_item() {
     return type;
 }
 
-void Monitor::produce(RequestType type) {
+void Monitor::produce(RequestType type)
+{
     Seating_Request request;
     request.type = type;
     buffer.push(request);
-    printf("Produced %s\n", producerAbbrevs[type]);
-    produced++;
+    in_request_queue[type]++;
+    // printf("Produced %s\n", producerAbbrevs[type]);
+    total_produced++;
+    produced[type]++;
 }
 
-RequestType Monitor::consume() {
+RequestType Monitor::consume()
+{
     Seating_Request request = buffer.front();
     buffer.pop();
-    printf("Consumed %s\n", producerAbbrevs[request.type]);
-    if (request.type == VIPRoom) {
+    in_request_queue[request.type]--;
+    // printf("Consumed %s\n", producerAbbrevs[request.type]);
+    if (request.type == VIPRoom)
+    {
         current_VIP--;
     }
+    total_consumed++;
     return request.type;
 }
 
-bool Monitor::is_finished() {
-    return produced >= max_productions;
+void Monitor::init_consumption_info_of_thread(ConsumerType type, unsigned int arr[])
+{
+    consumed[type] = arr;
 }
 
-bool Monitor::is_full() {
-    return buffer.size() >= MAX_SEATING_REQUESTS;
+bool Monitor::finished_producing_requests()
+{
+    return total_produced == max_productions;
 }
 
-std::queue<Seating_Request> Monitor::get_buffer() {
+bool Monitor::consumed_all_requests()
+{
+    return total_consumed == max_productions;
+}
+
+int Monitor::get_total_consumed()
+{
+    return total_consumed;
+}
+
+int Monitor::get_total_produced()
+{
+    return total_produced;
+}
+
+bool Monitor::is_full()
+{
+    return buffer.size() == MAX_SEATING_REQUESTS;
+}
+
+std::queue<Seating_Request> Monitor::get_buffer()
+{
     return buffer;
+}
+
+unsigned int *Monitor::get_produced_arr()
+{
+    return produced;
+}
+
+unsigned int *Monitor::get_request_queue()
+{
+    return in_request_queue;
+}
+
+unsigned int **Monitor::get_consumption_info_of_all_threads()
+{
+    return consumed;
 }
