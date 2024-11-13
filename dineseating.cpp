@@ -70,10 +70,9 @@ Thread_Args parse_args(int argc, char *argv[])
     return args;
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char* argv[]) {
     Thread_Args args = parse_args(argc, argv);
-    Monitor mon(args.max_productions);
+    Monitor mon = Monitor(args.max_productions);
     Log_Helper log_helper(&mon);
 
     pthread_t general_producer_thread;
@@ -96,7 +95,7 @@ int main(int argc, char *argv[])
     pthread_join(t_x_consumer_thread, NULL);
     pthread_join(rev_9_consumer_thread, NULL);
 
-    // log_helper.history();
-    output_production_history(mon.get_produced_arr(), mon.get_consumption_info_of_all_threads());
+    log_helper.history();
+
     return 0;
 }

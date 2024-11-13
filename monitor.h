@@ -6,13 +6,10 @@
 #include <string>
 #include <unistd.h>
 #include "seating.h"
-extern "C"
-{
-#include "log.h"
-}
-#define DEFAULT_MAX_PRODUCTIONS 120
+
 #define MAX_SEATING_REQUESTS 18
 #define MAX_VIP_REQUESTS 5
+#define microseconds_to_milliseconds 1000
 
 typedef struct Seating_Request
 {
@@ -35,6 +32,7 @@ private:
     unsigned int **consumed;
     unsigned int *in_request_queue;
     int current_VIP;
+    int waiting_producers;
 
 public:
     Monitor();
@@ -56,11 +54,17 @@ public:
     bool finished_producing_requests();
     bool consumed_all_requests();
 
+    bool buffer_empty();
+
     bool is_full();
     unsigned int *get_produced_arr();
 
     int get_total_consumed();
     int get_total_produced();
+
+    int get_produced();
+
+    int get_current_VIP();
 
     std::queue<Seating_Request> get_buffer();
 };
