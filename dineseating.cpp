@@ -94,6 +94,6 @@ int main(int argc, char* argv[]) {
     pthread_join(t_x_consumer_thread, NULL);
     pthread_join(rev_9_consumer_thread, NULL);
 
-    // log_helper.history();
+    log_helper.history();
     return 0;
 }

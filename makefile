@@ -14,6 +14,6 @@ clean:
 run:
 	make clean
 	make compile
-	./dineseating.o -s 10 -x 20 -r 35 -g 15 -v 10
+	./dineseating.o -s 100 -x 20 -r 35 -g 15 -v 10
 	make clean
 

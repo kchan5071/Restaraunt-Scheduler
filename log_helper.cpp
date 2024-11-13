@@ -20,7 +20,10 @@ void Log_Helper::request_removed(Consumers consumer, RequestType request_type) {
 }
 
 void Log_Helper::history() {
-    // output_production_history(produced.data(), consumed.data());
+    unsigned int** consumed = (unsigned int**)calloc(2, sizeof(unsigned int*));
+    consumed[0] = this->consumed[0].data();
+    consumed[1] = this->consumed[1].data();
+    output_production_history(produced.data(), consumed);
 }
 
 std::vector<unsigned int> Log_Helper::convert_queue_to_vector(std::queue<Seating_Request> queue) {
