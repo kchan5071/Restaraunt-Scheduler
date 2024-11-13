@@ -45,7 +45,7 @@ public:
 
     void produce_item(RequestType type);
 
-    RequestType consume_item(Consumers consumer);
+    void consume_item(Consumers consumer);
 
     void produce(RequestType type);
 

@@ -13,7 +13,7 @@ void Consumer::consume()
 {
     while (!this->mon->consumed_all_requests()) // TODO: add lock --> accessing shared data
     {
-        RequestType returned_type = mon->consume_item(type);
+        this->mon->consume_item(type);
         // log_helper->request_removed(this->type, returned_type, consumed);
         usleep(consumption_time * 1000); // usleep takes microseconds, multiple consumption_time by 1000 to get # of milliseconds in microseconds
     }

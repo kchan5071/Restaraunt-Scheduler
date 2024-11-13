@@ -74,7 +74,6 @@ int main(int argc, char *argv[])
 {
     Thread_Args args = parse_args(argc, argv);
     Monitor mon(args.max_productions);
-    Log_Helper log_helper(&mon);
 
     pthread_t general_producer_thread;
     pthread_t vip_producer_thread;

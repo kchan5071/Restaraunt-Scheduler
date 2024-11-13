@@ -28,29 +28,34 @@ void Monitor::produce_item(RequestType type)
     {
         pthread_cond_wait(&cond, &mutex);
     }
-    if (type == VIPRoom)
+    if (!finished_producing_requests())
     {
-        current_VIP++;
+        if (type == VIPRoom)
+        {
+            current_VIP++;
+        }
+        produce(type);
+        output_request_added(type, produced, in_request_queue);
     }
-    produce(type);
-    output_request_added(type, produced, in_request_queue);
     pthread_cond_signal(&cond);
     pthread_mutex_unlock(&mutex);
 }
 
-RequestType Monitor::consume_item(Consumers consumer)
+void Monitor::consume_item(Consumers consumer)
 {
     pthread_mutex_lock(&mutex);
-    while (buffer.empty())
+    while (buffer.empty() && !finished_producing_requests())
     {
         pthread_cond_wait(&cond, &mutex);
     }
-    RequestType type = consume();
-    consumed[consumer][type]++;
-    output_request_removed(consumer, type, consumed[type], in_request_queue);
+    if (!consumed_all_requests())
+    {
+        RequestType type = consume();
+        consumed[consumer][type]++;
+        output_request_removed(consumer, type, consumed[type], in_request_queue);
+    }
     pthread_cond_signal(&cond);
     pthread_mutex_unlock(&mutex);
-    return type;
 }
 
 void Monitor::produce(RequestType type)
@@ -85,16 +90,16 @@ void Monitor::init_consumption_info_of_thread(ConsumerType type)
 
 bool Monitor::finished_producing_requests()
 {
-    // pthread_mutex_lock(&mutex_p_bool);
-    bool finished = total_produced == max_productions;
-    // pthread_mutex_unlock(&mutex_p_bool);
+    pthread_mutex_lock(&mutex_p_bool);
+    bool finished = total_produced >= max_productions;
+    pthread_mutex_unlock(&mutex_p_bool);
     return finished;
 }
 
 bool Monitor::consumed_all_requests()
 {
     // pthread_mutex_lock(&mutex_c_bool);
-    bool finished = total_consumed == max_productions;
+    bool finished = total_consumed >= max_productions;
     // pthread_mutex_unlock(&mutex_c_bool);
     return finished;
 }

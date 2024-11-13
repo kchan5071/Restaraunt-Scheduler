@@ -7,8 +7,8 @@ C = gcc
 TARGET = dineseating
 
 # Source and object files
-SOURCES = log.c monitor.cpp log_helper.cpp producer.cpp consumer.cpp  dineseating.cpp
-OBJECTS = log.o monitor.o log_helper.o producer.o consumer.o dineseating.o
+SOURCES = log.c monitor.cpp producer.cpp consumer.cpp  dineseating.cpp
+OBJECTS = log.o monitor.o producer.o consumer.o dineseating.o
 
 # Build target executable
 $(TARGET): $(OBJECTS)
@@ -17,9 +17,6 @@ $(TARGET): $(OBJECTS)
 # Compile object files
 log.o: log.c
 	$(C) log.c -o log.o -c
-
-log_helper.o: log_helper.cpp
-	$(CXX) $(CFLAGS) -c log_helper.cpp -o log_helper.o
 
 monitor.o: monitor.cpp
 	$(CXX) $(CFLAGS) -c monitor.cpp -o monitor.o
