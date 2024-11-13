@@ -4,19 +4,21 @@
 #include "monitor.h"
 #include "seating.h"
 #include "log_helper.h"
+#include <thread>
+#include <chrono>
 
-class Consumer {
+class Consumer
+{
 protected:
-    Monitor* mon;
+    Monitor *mon;
     Consumers type;
     int consumption_time;
-    Log_Helper* log_helper;
+    Log_Helper *log_helper;
 
 public:
-    Consumer(Monitor* mon, Log_Helper* log_helper, int consumption_time, Consumers type);
+    Consumer(Monitor *mon, Log_Helper *log_helper, int consumption_time, Consumers type);
 
     void consume();
-
-    static void* start_consume(void* arg);
+    static void *start_consume(void *arg);
 };
 #endif

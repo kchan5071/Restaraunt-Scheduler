@@ -17,4 +17,3 @@ run:
 	make compile
 	./dineseating -s 10 -x 13 -r 14 -g 7s -v 12
 	make clean
-

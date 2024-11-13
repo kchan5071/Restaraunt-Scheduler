@@ -3,11 +3,13 @@
 
 #include <queue>
 #include <vector>
+#include <algorithm>
 #include "seating.h"
 #include "monitor.h"
 
-extern "C" {
-    #include "log.h"
+extern "C"
+{
+#include "log.h"
 }
 
 class Log_Helper {
@@ -16,13 +18,13 @@ class Log_Helper {
         std::vector<std::vector<unsigned int>> consumed;
         std::vector<unsigned int> inRequestQueue;
         Monitor* monitor;
-
         std::vector<unsigned int> convert_queue_to_vector(std::queue<Seating_Request> queue);
-
+    
     public:
         Log_Helper(Monitor* monitor);
         void request_added(RequestType request_type, int producer);
         void request_removed(Consumers consumer, RequestType request_type);
         void history();
+
 };
 #endif
