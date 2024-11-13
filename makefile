@@ -6,7 +6,7 @@ compile:
 	g++ -std=c++11 monitor.cpp -o monitor.o -g -pthread -c
 
 
-	g++ -std=c++11 dineseating.cpp producer.o consumer.o monitor.o log.o log_helper.o -o dineseating.o -g -pthread
+	g++ -std=c++11 dineseating.cpp producer.o consumer.o monitor.o log.o log_helper.o -o dineseating -g -pthread
 
 clean:
 	rm -f *.o
@@ -14,6 +14,6 @@ clean:
 run:
 	make clean
 	make compile
-	./dineseating.o -s 100 -x 20 -r 35 -g 15 -v 10
+	./dineseating -s 100 -x 20 -r 35 -g 15 -v 10
 	make clean
 
