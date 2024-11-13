@@ -16,8 +16,6 @@ class Log_Helper
 {
 private:
     // std::vector<unsigned int> produced;
-    pthread_mutex_t mutex;
-
     // unsigned int *produced;
     // unsigned int **consumed;
     // // std::vector<unsigned int> consumed;
@@ -29,8 +27,8 @@ private:
 
 public:
     Log_Helper(Monitor *monitor);
-    void request_added(RequestType request_type);
-    void request_removed(Consumers consumer, RequestType request_type, unsigned int *consumed);
-    void history();
+    // void request_added(RequestType request_type);
+    // void request_removed(Consumers consumer, RequestType request_type, unsigned int *consumed);
+    // void history();
 };
 #endif

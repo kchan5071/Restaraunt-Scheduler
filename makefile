@@ -1,20 +1,46 @@
+# Compiler and flags
+CXX = g++
+CFLAGS = -std=c++11 -g -pthread
+C = gcc
 
-compile:
-	gcc log.c -o log.o -c
-	g++ -std=c++11 log_helper.cpp -o log_helper.o -g -c
-	g++ -std=c++11 producer.cpp -o producer.o -g -pthread -c
-	g++ -std=c++11 consumer.cpp -o consumer.o -g -pthread -c
-	g++ -std=c++11 monitor.cpp -o monitor.o -g -pthread -c
+# Target executable
+TARGET = dineseating
+
+# Source and object files
+SOURCES = log.c monitor.cpp log_helper.cpp producer.cpp consumer.cpp  dineseating.cpp
+OBJECTS = log.o monitor.o log_helper.o producer.o consumer.o dineseating.o
+
+# Build target executable
+$(TARGET): $(OBJECTS)
+	$(CXX) $(CFLAGS) $(OBJECTS) -o $(TARGET)
+
+# Compile object files
+log.o: log.c
+	$(C) log.c -o log.o -c
+
+log_helper.o: log_helper.cpp
+	$(CXX) $(CFLAGS) -c log_helper.cpp -o log_helper.o
+
+monitor.o: monitor.cpp
+	$(CXX) $(CFLAGS) -c monitor.cpp -o monitor.o
+
+producer.o: producer.cpp
+	$(CXX) $(CFLAGS) -c producer.cpp -o producer.o
+
+consumer.o: consumer.cpp
+	$(CXX) $(CFLAGS) -c consumer.cpp -o consumer.o
 
 
-	g++ -std=c++11 dineseating.cpp producer.o consumer.o monitor.o log.o log_helper.o -o dineseating -g -pthread
+dineseating.o: dineseating.cpp
+	$(CXX) $(CFLAGS) -c dineseating.cpp -o dineseating.o
 
+# Clean up build files
 clean:
-	rm -f *.o
+	rm -f $(OBJECTS) $(TARGET)
 
+# Run the program
 run:
 	make clean
-	make compile
-	./dineseating -s 100 -x 20 -r 35 -g 15 -v 10
+	make
+	./$(TARGET) -s 100 -x 20 -r 35 -g 15 -v 10
 	make clean
-

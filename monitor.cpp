@@ -16,6 +16,8 @@ Monitor::Monitor(int max_productions)
 Monitor::~Monitor()
 {
     pthread_mutex_destroy(&mutex);
+    pthread_mutex_destroy(&mutex_c_bool);
+    pthread_mutex_destroy(&mutex_p_bool);
     pthread_cond_destroy(&cond);
 }
 
@@ -31,11 +33,12 @@ void Monitor::produce_item(RequestType type)
         current_VIP++;
     }
     produce(type);
+    output_request_added(type, produced, in_request_queue);
     pthread_cond_signal(&cond);
     pthread_mutex_unlock(&mutex);
 }
 
-RequestType Monitor::consume_item()
+RequestType Monitor::consume_item(Consumers consumer)
 {
     pthread_mutex_lock(&mutex);
     while (buffer.empty())
@@ -43,6 +46,8 @@ RequestType Monitor::consume_item()
         pthread_cond_wait(&cond, &mutex);
     }
     RequestType type = consume();
+    consumed[consumer][type]++;
+    output_request_removed(consumer, type, consumed[type], in_request_queue);
     pthread_cond_signal(&cond);
     pthread_mutex_unlock(&mutex);
     return type;
@@ -73,19 +78,25 @@ RequestType Monitor::consume()
     return request.type;
 }
 
-void Monitor::init_consumption_info_of_thread(ConsumerType type, unsigned int arr[])
+void Monitor::init_consumption_info_of_thread(ConsumerType type)
 {
-    consumed[type] = arr;
+    consumed[type] = new unsigned int[2]{0, 0};
 }
 
 bool Monitor::finished_producing_requests()
 {
-    return total_produced == max_productions;
+    // pthread_mutex_lock(&mutex_p_bool);
+    bool finished = total_produced == max_productions;
+    // pthread_mutex_unlock(&mutex_p_bool);
+    return finished;
 }
 
 bool Monitor::consumed_all_requests()
 {
-    return total_consumed == max_productions;
+    // pthread_mutex_lock(&mutex_c_bool);
+    bool finished = total_consumed == max_productions;
+    // pthread_mutex_unlock(&mutex_c_bool);
+    return finished;
 }
 
 int Monitor::get_total_consumed()
@@ -111,11 +122,6 @@ std::queue<Seating_Request> Monitor::get_buffer()
 unsigned int *Monitor::get_produced_arr()
 {
     return produced;
-}
-
-unsigned int *Monitor::get_request_queue()
-{
-    return in_request_queue;
 }
 
 unsigned int **Monitor::get_consumption_info_of_all_threads()

@@ -10,11 +10,11 @@ Producer::Producer(Monitor *mon, Log_Helper *log_helper, int production_time, Re
 
 void Producer::produce()
 {
-    while (!this->mon->finished_producing_requests())
+    while (!this->mon->finished_producing_requests()) // TODO: add lock? --> accessing shared data
     {
         this->mon->produce_item(this->type);
-        log_helper->request_added(this->type);
-        std::this_thread::sleep_for(std::chrono::milliseconds(production_time));
+        // log_helper->request_added(this->type);
+        usleep(production_time * 1000); // multiply production time by 1000 to convert milliseconds to microseconds to pass into usleep
     }
 }
 

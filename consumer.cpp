@@ -6,19 +6,16 @@ Consumer::Consumer(Monitor *mon, Log_Helper *log_helper, int consumption_time, C
     this->log_helper = log_helper;
     this->consumption_time = consumption_time;
     this->type = type;
-    consumed = new unsigned int[2]{0, 0};
-    mon->init_consumption_info_of_thread(type, consumed);
+    mon->init_consumption_info_of_thread(type);
 }
 
 void Consumer::consume()
 {
-    while (!this->mon->consumed_all_requests())
+    while (!this->mon->consumed_all_requests()) // TODO: add lock --> accessing shared data
     {
-        RequestType returned_type = mon->consume_item();
-        ++consumed[returned_type];
-        log_helper->request_removed(this->type, returned_type, consumed);
-        // std::this_thread::sleep_for(std::chrono::milliseconds(consumption_time));
-        usleep(consumption_time * 1000);
+        RequestType returned_type = mon->consume_item(type);
+        // log_helper->request_removed(this->type, returned_type, consumed);
+        usleep(consumption_time * 1000); // usleep takes microseconds, multiple consumption_time by 1000 to get # of milliseconds in microseconds
     }
 }
 

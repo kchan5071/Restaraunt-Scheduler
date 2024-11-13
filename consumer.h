@@ -14,7 +14,6 @@ protected:
     Consumers type;
     int consumption_time;
     Log_Helper *log_helper;
-    unsigned int *consumed;
 
 public:
     Consumer(Monitor *mon, Log_Helper *log_helper, int consumption_time, Consumers type);
