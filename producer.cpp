@@ -1,5 +1,7 @@
 #include "producer.h"
 
+#define MILLISECONDS_TO_MICROSECONDS 1000
+
 Producer::Producer(Monitor *mon, int production_time, RequestType type)
 {
     this->mon = mon;
@@ -14,7 +16,7 @@ void Producer::produce()
         this->mon->produce_item(this->type);
         bool flag = this->mon->finished_producing_requests();
         // log_helper->request_added(this->type);
-        usleep(production_time * 1000); // multiply production time by 1000 to convert milliseconds to microseconds to pass into usleep
+        usleep(production_time * MILLISECONDS_TO_MICROSECONDS); // multiply production time by 1000 to convert milliseconds to microseconds to pass into usleep
     }
 }
 

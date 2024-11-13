@@ -1,4 +1,5 @@
 #include "consumer.h"
+#define MILLISECONDS_TO_MICROSECONDS 1000
 
 Consumer::Consumer(Monitor *mon, int consumption_time, Consumers type)
 {
@@ -14,7 +15,7 @@ void Consumer::consume()
     {
         this->mon->consume_item(type);
         // log_helper->request_removed(this->type, returned_type, consumed);
-        usleep(consumption_time * 1000); // usleep takes microseconds, multiple consumption_time by 1000 to get # of milliseconds in microseconds
+        usleep(consumption_time * MILLISECONDS_TO_MICROSECONDS); // usleep takes microseconds, multiple consumption_time by 1000 to get # of milliseconds in microseconds
     }
 }
 
