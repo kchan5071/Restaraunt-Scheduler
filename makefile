@@ -3,16 +3,15 @@ CXX = g++
 CFLAGS = -std=c++11 -g -pthread
 C = gcc
 
-# Target executable
-TARGET = dineseating
+# PROGRAM executable
+PROGRAM = dineseating
 
-# Source and object files
-SOURCES = log.c monitor.cpp producer.cpp consumer.cpp  dineseating.cpp
+# Declare object files
 OBJECTS = log.o monitor.o producer.o consumer.o dineseating.o
 
-# Build target executable
-$(TARGET): $(OBJECTS)
-	$(CXX) $(CFLAGS) $(OBJECTS) -o $(TARGET)
+# Build PROGRAM executable
+$(PROGRAM): $(OBJECTS)
+	$(CXX) $(CFLAGS) $(OBJECTS) -o $(PROGRAM)
 
 # Compile object files
 log.o: log.c
@@ -33,11 +32,11 @@ dineseating.o: dineseating.cpp
 
 # Clean up build files
 clean:
-	rm -f $(OBJECTS) $(TARGET)
+	rm -f $(OBJECTS) $(PROGRAM)
 
 # Run the program
 run:
 	make clean
 	make
-	./$(TARGET) -s 100 -x 20 -r 35 -g 15 -v 10
+	./$(PROGRAM) -s 100 -x 20 -r 35 -g 15 -v 10
 	make clean
