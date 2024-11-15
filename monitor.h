@@ -11,26 +11,18 @@
 #define MAX_VIP_REQUESTS 5
 #define microseconds_to_milliseconds 1000
 
-typedef struct Seating_Request
-{
+typedef struct Seating_Request {
     RequestType type;
 } Seating_Request;
 
-class Monitor
-{
+class Monitor {
 private:
     std::queue<Seating_Request> buffer;
     pthread_mutex_t mutex;
-    pthread_mutex_t mutex_p_bool;
-    pthread_mutex_t mutex_c_bool;
     pthread_cond_t cond;
 
     int max_productions;
-    int total_produced;
-    int total_consumed;
-    unsigned int *produced;
-    unsigned int **consumed;
-    unsigned int *in_request_queue;
+    int produced;
     int current_VIP;
     int waiting_producers;
 
@@ -43,24 +35,17 @@ public:
 
     void produce_item(RequestType type);
 
-    RequestType consume_item(Consumers consumer);
+    RequestType consume_item();
 
     void produce(RequestType type);
 
     RequestType consume();
-    void init_consumption_info_of_thread(ConsumerType type);
-    unsigned int **get_consumption_info_of_all_threads();
 
-    bool finished_producing_requests();
-    bool consumed_all_requests();
+    bool is_finished();
 
     bool buffer_empty();
 
     bool is_full();
-    unsigned int *get_produced_arr();
-
-    int get_total_consumed();
-    int get_total_produced();
 
     int get_produced();
 

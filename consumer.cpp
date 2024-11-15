@@ -1,12 +1,10 @@
 #include "consumer.h"
 
-Consumer::Consumer(Monitor *mon, Log_Helper *log_helper, int consumption_time, Consumers type)
-{
+Consumer::Consumer(Monitor* mon, Log_Helper* log_helper, int consumption_time, Consumers type) {
     this->mon = mon;
-    this->log_helper = log_helper;
     this->consumption_time = consumption_time;
     this->type = type;
-    mon->init_consumption_info_of_thread(type);
+    this->log_helper = log_helper;
 }
 
 void Consumer::consume() {
@@ -17,13 +15,11 @@ void Consumer::consume() {
         }
         log_helper->request_removed(this->type, returned_type);
         usleep(consumption_time * microseconds_to_milliseconds);
-
     }
 }
 
-void *Consumer::start_consume(void *arg)
-{
-    Consumer *c = (Consumer *)arg;
+void* Consumer::start_consume(void* arg) {
+    Consumer* c = (Consumer*) arg;
     c->consume();
     return NULL;
 }
