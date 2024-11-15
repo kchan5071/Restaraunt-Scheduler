@@ -3,7 +3,6 @@
 
 #include <queue>
 #include <vector>
-#include <algorithm>
 #include "seating.h"
 #include "monitor.h"
 

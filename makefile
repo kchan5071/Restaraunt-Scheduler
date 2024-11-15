@@ -1,19 +1,40 @@
-compile:
+#Makefile
+
+# Specify compiler
+CC = g++
+# -std=c++11  C/C++ variant to use, e.g. C++ 2011
+# -Wall       show the necessary warning files
+# -g3         include information for symbolic debugger e.g. gdb 
+CCFLAGS = -std=c++11 -Wall -g3 -c
+
+# object files
+OBJS = log_helper.o log.o dineseating.o consumer.o producer.o monitor.o
+
+# Program name
+PROGRAM = dineseating
+
+# The program depends upon its object files
+$(PROGRAM) : $(OBJS)
+	$(CC) -pthread -o $(PROGRAM) $(OBJS)
+
+dineseating.o : dineseating.cpp
+	$(CC) $(CCFLAGS) dineseating.cpp
+
+consumer.o : consumer.cpp consumer.h
+	$(CC) $(CCFLAGS) consumer.cpp
+
+producer.o: producer.cpp producer.h
+	$(CC) $(CCFLAGS) producer.cpp
+
+monitor.o: monitor.cpp monitor.h
+	$(CC) $(CCFLAGS) monitor.cpp
+
+log_helper.o: log_helper.cpp log_helper.h
+	$(CC) $(CCFLAGS) log_helper.cpp
+
+log.o: log.c log.h
 	gcc log.c -o log.o -c
-	g++ -std=c++11 -pthread log_helper.cpp -o log_helper.o -g -c
-	g++ -std=c++11 -pthread monitor.cpp -o monitor.o -g -c
-	g++ -std=c++11 -pthread producer.cpp -o producer.o -g -c
-	g++ -std=c++11 -pthread consumer.cpp -o consumer.o -g -c
 
-	g++ -std=c++11 -pthread dineseating.cpp producer.o consumer.o monitor.o log.o log_helper.o -o dineseating -g 
-
-clean:
-	rm -f dineseating
-	rm -f *.o
-
-run:
-	make clean
-	make compile
-	./dineseating -s 10 -x 13 -r 14 -g 7s -v 12
-	make clean
+clean :
+	rm -f $(OBJS) *~ $(PROGRAM)
 

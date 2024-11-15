@@ -26,11 +26,9 @@ void Log_Helper::history() {
     output_production_history(produced.data(), consumed);
 }
 
-std::vector<unsigned int> Log_Helper::convert_queue_to_vector(std::queue<Seating_Request> queue)
-{
+std::vector<unsigned int> Log_Helper::convert_queue_to_vector(std::queue<Seating_Request> queue) {
     std::vector<unsigned int> vec;
-    while (!queue.empty())
-    {
+    while (!queue.empty()) {
         vec.push_back(queue.front().type);
         queue.pop();
     }
