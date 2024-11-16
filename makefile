@@ -38,3 +38,9 @@ log.o: log.c log.h
 clean :
 	rm -f $(OBJS) *~ $(PROGRAM)
 
+run:
+	make clean
+	make
+	./$(PROGRAM) -s 100 -x 20 -r 35 -g 15 -v 10
+	make clean
+
