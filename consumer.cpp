@@ -1,11 +1,10 @@
 #include "consumer.h"
 
-Consumer::Consumer(Monitor *mon, Log_Helper *log_helper, int consumption_time, Consumers type)
+Consumer::Consumer(Monitor *mon, int consumption_time, Consumers type)
 {
     this->mon = mon;
     this->consumption_time = consumption_time;
     this->type = type;
-    this->log_helper = log_helper;
 }
 
 void Consumer::consume()
@@ -18,7 +17,6 @@ void Consumer::consume()
         {
             break;
         }
-        // log_helper->request_removed(this->type, returned_type);
     }
 }
 

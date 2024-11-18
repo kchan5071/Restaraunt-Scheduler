@@ -33,7 +33,6 @@ bool Monitor::produce_item(RequestType type)
 
     if (!finished_producing())
     {
-
         if (type == VIPRoom)
         {
             current_VIP++;
@@ -42,8 +41,8 @@ bool Monitor::produce_item(RequestType type)
         logger->request_added(type);
         produced_item = true;
     }
+    
     pthread_cond_signal(&unconsumed);
-
     pthread_mutex_unlock(&mutex);
     return produced_item;
 }
@@ -95,7 +94,6 @@ RequestType Monitor::consume()
 bool Monitor::finished_producing()
 {
     return produced >= max_productions - waiting_producers;
-    // return produced >= max_productions;
 }
 bool Monitor::finished_consuming()
 {

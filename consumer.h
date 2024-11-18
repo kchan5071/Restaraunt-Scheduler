@@ -13,10 +13,9 @@ protected:
     Monitor *mon;
     Consumers type;
     int consumption_time;
-    Log_Helper *log_helper;
 
 public:
-    Consumer(Monitor *mon, Log_Helper *log_helper, int consumption_time, Consumers type);
+    Consumer(Monitor *mon, int consumption_time, Consumers type);
 
     void consume();
     static void *start_consume(void *arg);
