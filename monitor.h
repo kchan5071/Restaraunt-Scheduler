@@ -24,6 +24,7 @@ private:
     pthread_mutex_t mutex;
     pthread_cond_t available_slots;
     pthread_cond_t unconsumed;
+    pthread_cond_t VIP_available;
 
     int max_productions;
     int produced;
