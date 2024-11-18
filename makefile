@@ -37,10 +37,33 @@ log.o: log.c log.h
 
 clean :
 	rm -f $(OBJS) *~ $(PROGRAM)
-
 run:
 	make clean
 	make
-	./$(PROGRAM) -s 100 -x 20 -r 35 -g 15 -v 10
+	# ./$(PROGRAM) 
+	# ./$(PROGRAM) 
+	# ./$(PROGRAM) 
+	# ./$(PROGRAM) 
+	# ./$(PROGRAM) 
+	# ./$(PROGRAM) 
+	# ./$(PROGRAM) 
+	# ./$(PROGRAM) 
+	./$(PROGRAM) 
+	./$(PROGRAM) 
+	./$(PROGRAM) 
+	./$(PROGRAM) -v 3 -g 9 -x 37 -r 40
+	./$(PROGRAM) -s 5
+	./$(PROGRAM) -s 5 -v 10 -g 25 -x 2 -r 3
+	./$(PROGRAM) 1
+	./$(PROGRAM) -v 2000 -g 1 -x 3 -r 7
+	./$(PROGRAM) 1
+	./$(PROGRAM) -s 120
+	./$(PROGRAM) -s 150
+	./$(PROGRAM) -s 75
+	./$(PROGRAM) -v 1 -g 2 -x 30 -r 30
+	./$(PROGRAM) -v 2 -g 1 -x 3 -r 3
+	./$(PROGRAM) -v 2 -g 3 -x 1 -r 1
+	./$(PROGRAM) -v 2 -g 4 -x 1 -r 5
+	./$(PROGRAM) -v 1 -g 2 -x 3 -r 4
 	make clean
 
