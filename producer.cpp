@@ -16,7 +16,7 @@ void Producer::produce()
         usleep(production_time * microseconds_to_milliseconds);
 
         // Produce the item
-        this->mon->produce_item(this->type);
+        this->mon->produce_add_item(this->type);
     }
 }
 

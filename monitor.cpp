@@ -1,6 +1,6 @@
 #include "monitor.h"
 
-Monitor::Monitor(int max_productions, Log_Helper* logger)
+Monitor::Monitor(int max_productions, Log_Helper *logger)
 {
     // initialize the mutex and condition variables
     pthread_mutex_init(&mutex, NULL);
@@ -16,7 +16,7 @@ Monitor::Monitor(int max_productions, Log_Helper* logger)
 }
 
 Monitor::~Monitor()
-{   
+{
     // destroy the mutex and condition variables
     pthread_mutex_destroy(&mutex);
     pthread_cond_destroy(&available_slots);
@@ -24,7 +24,7 @@ Monitor::~Monitor()
     pthread_cond_destroy(&VIP_available);
 }
 
-bool Monitor::produce_item(RequestType type)
+bool Monitor::produce_add_item(RequestType type)
 {
     // initialize the produced_item variable, this is used to determine if an item was produced
     // and returned to the producer
@@ -32,7 +32,7 @@ bool Monitor::produce_item(RequestType type)
     // lock the mutex
     pthread_mutex_lock(&mutex);
     // If the VIP room is full, wait for a signal from the consumer
-    if (type == VIPRoom  && current_VIP >= MAX_VIP_REQUESTS)
+    if (type == VIPRoom && current_VIP >= MAX_VIP_REQUESTS)
     {
         waiting_producers++;
         pthread_cond_wait(&VIP_available, &mutex);
@@ -54,11 +54,11 @@ bool Monitor::produce_item(RequestType type)
     {
         // If the item is a VIP room request, increment the current VIP counter
         if (type == VIPRoom)
-        {            
+        {
             current_VIP++;
         }
-        // Produce the item and log the request
-        produce(type);
+        // Add prouced item and log the request
+        add_request(type);
         logger->request_added(type);
         produced_item = true;
     }
@@ -97,7 +97,7 @@ RequestType Monitor::consume_item(ConsumerType consumer)
     logger->request_removed(consumer, type);
 
     // END CRITICAL REGION------------------------------------------
-    
+
     pthread_cond_signal(&available_slots);
     // If the producer is finished producing, signal the consumer
     if (finished_producing())
@@ -108,7 +108,7 @@ RequestType Monitor::consume_item(ConsumerType consumer)
     return type;
 }
 
-void Monitor::produce(RequestType type)
+void Monitor::add_request(RequestType type)
 {
     Seating_Request request;
     request.type = type;
@@ -141,7 +141,7 @@ bool Monitor::finished_producing()
     return produced >= max_productions - waiting_producers;
 }
 bool Monitor::finished_consuming()
-{ 
+{
     // If the number of consumed items is greater than or equal to the max productions
     return consumed >= max_productions;
 }
