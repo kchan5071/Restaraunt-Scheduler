@@ -15,7 +15,7 @@ void Producer::produce()
         usleep(production_time * microseconds_to_milliseconds);
         if (this->mon->produce_item(this->type))
         {
-            log_helper->request_added(this->type, this->type);
+            // log_helper->request_added(this->type, this->type);
         }
     }
 }

@@ -13,12 +13,12 @@ void Consumer::consume()
     while (!mon->buffer_empty() || !mon->finished_producing())
     {
         usleep(consumption_time * microseconds_to_milliseconds);
-        RequestType returned_type = mon->consume_item();
+        RequestType returned_type = mon->consume_item(this->type);
         if (returned_type == RequestTypeN)
         {
             break;
         }
-        log_helper->request_removed(this->type, returned_type);
+        // log_helper->request_removed(this->type, returned_type);
     }
 }
 

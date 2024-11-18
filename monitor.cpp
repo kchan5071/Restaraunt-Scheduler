@@ -1,6 +1,6 @@
 #include "monitor.h"
 
-Monitor::Monitor(int max_productions)
+Monitor::Monitor(int max_productions, Log_Helper* logger)
 {
     pthread_mutex_init(&mutex, NULL);
     pthread_cond_init(&available_slots, NULL);
@@ -10,6 +10,7 @@ Monitor::Monitor(int max_productions)
     produced = 0;
     consumed = 0;
     waiting_producers = 0;
+    this->logger = logger;
 }
 
 Monitor::~Monitor()
@@ -38,6 +39,7 @@ bool Monitor::produce_item(RequestType type)
             current_VIP++;
         }
         produce(type);
+        logger->request_added(type);
         produced_item = true;
     }
     pthread_cond_signal(&unconsumed);
@@ -46,7 +48,7 @@ bool Monitor::produce_item(RequestType type)
     return produced_item;
 }
 
-RequestType Monitor::consume_item()
+RequestType Monitor::consume_item(ConsumerType consumer)
 {
     pthread_mutex_lock(&mutex);
     while (buffer_empty())
@@ -60,6 +62,7 @@ RequestType Monitor::consume_item()
     }
 
     RequestType type = consume();
+    logger->request_removed(consumer, type);
     pthread_cond_signal(&available_slots);
     if (finished_producing())
     {

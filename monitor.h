@@ -6,6 +6,7 @@
 #include <string>
 #include <unistd.h>
 #include "seating.h"
+#include "log_helper.h"
 
 #define MAX_SEATING_REQUESTS 18
 #define MAX_VIP_REQUESTS 5
@@ -29,17 +30,18 @@ private:
     int consumed;
     int current_VIP;
     int waiting_producers;
+    Log_Helper* logger;
 
 public:
     Monitor();
 
-    Monitor(int max_productions);
+    Monitor(int max_productions, Log_Helper* logger);
 
     ~Monitor();
 
     bool produce_item(RequestType type);
 
-    RequestType consume_item();
+    RequestType consume_item(ConsumerType consumer);
 
     void produce(RequestType type);
 
