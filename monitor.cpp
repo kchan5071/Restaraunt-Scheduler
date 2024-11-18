@@ -24,7 +24,7 @@ bool Monitor::produce_item(RequestType type)
 {
     bool produced_item = false;
     pthread_mutex_lock(&mutex);
-    if (is_full() || (type == VIPRoom && current_VIP >= MAX_VIP_REQUESTS))
+    while (is_full() || (type == VIPRoom && current_VIP >= MAX_VIP_REQUESTS))
     {
         waiting_producers++;
         pthread_cond_wait(&available_slots, &mutex);
@@ -34,14 +34,12 @@ bool Monitor::produce_item(RequestType type)
     if (!finished_producing())
     {
         if (type == VIPRoom)
-        {
-            current_VIP++;
+        {            current_VIP++;
         }
         produce(type);
         logger->request_added(type);
         produced_item = true;
     }
-    
     pthread_cond_signal(&unconsumed);
     pthread_mutex_unlock(&mutex);
     return produced_item;
