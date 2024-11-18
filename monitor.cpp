@@ -1,3 +1,7 @@
+/*
+  Halie Do 827707836
+  Kai Chan 827673009
+ */
 #include "monitor.h"
 
 Monitor::Monitor(int max_productions, Log_Helper *logger)

@@ -1,3 +1,8 @@
+/*
+  Halie Do 827707836
+  Kai Chan 827673009
+ */
+
 #ifndef CONSUMER_H
 #define CONSUMER_H
 
@@ -9,7 +14,8 @@
 /**
  * @brief   Class to represent a consumer
  */
-class Consumer {
+class Consumer
+{
 private:
     Monitor *mon;
     Consumers type;
@@ -18,7 +24,7 @@ private:
 public:
     /**
      * @brief   Constructor for the Consumer class
-     * 
+     *
      * @param mon               The monitor to consume from
      * @param consumption_time  The time to consume an item
      * @param type              The type of consumer
@@ -32,9 +38,9 @@ public:
 
     /**
      * @brief   Start the consume function
-     * 
+     *
      * @param arg   The consumer object
-     * @return void* 
+     * @return void*
      */
     static void *start_consume(void *arg);
 };

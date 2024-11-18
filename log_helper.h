@@ -1,3 +1,7 @@
+/*
+  Halie Do 827707836
+  Kai Chan 827673009
+ */
 #ifndef LOG_HELPER_H
 #define LOG_HELPER_H
 
@@ -39,7 +43,7 @@ public:
     /**
      * @brief   Show that an item has been removed from the request queue
      *          and print the current status of the request queue.
-     * 
+     *
      * @param consumer  Who removed and processed the request?
      * @param type      What kind of request was removed?
      */

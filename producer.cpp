@@ -1,3 +1,7 @@
+/*
+  Halie Do 827707836
+  Kai Chan 827673009
+ */
 #include "producer.h"
 
 Producer::Producer(Monitor *mon, int production_time, RequestType type)

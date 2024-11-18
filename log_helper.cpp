@@ -1,5 +1,8 @@
 #include "log_helper.h"
-
+/*
+  Halie Do 827707836
+  Kai Chan 827673009
+ */
 
 Log_Helper::Log_Helper()
 {
@@ -8,7 +11,8 @@ Log_Helper::Log_Helper()
     inRequestQueue = std::vector<unsigned int>(2, 0);
 }
 
-void Log_Helper::request_added(RequestType request_type) { 
+void Log_Helper::request_added(RequestType request_type)
+{
     // Increment the produced and inRequestQueue counters
     produced[request_type]++;
     inRequestQueue[request_type]++;
@@ -32,10 +36,10 @@ void Log_Helper::history()
     // Output the production history
     unsigned int **consumed = (unsigned int **)calloc(2, sizeof(unsigned int *));
 
-    //split the consumed vector into two arrays
+    // split the consumed vector into two arrays
     consumed[0] = this->consumed[0].data();
     consumed[1] = this->consumed[1].data();
 
-    //output the production history
+    // output the production history
     output_production_history(produced.data(), consumed);
 }

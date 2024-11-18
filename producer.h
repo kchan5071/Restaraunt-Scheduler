@@ -1,3 +1,7 @@
+/*
+  Halie Do 827707836
+  Kai Chan 827673009
+ */
 #ifndef PRODUCER_H
 #define PRODUCER_H
 
@@ -18,7 +22,7 @@ private:
 public:
     /**
      * @brief Construct a new Producer object
-     * 
+     *
      * @param mon               The monitor to produce items to
      * @param production_time   The time to produce an item
      * @param type              The type of item to produce
@@ -32,9 +36,9 @@ public:
 
     /**
      * @brief Start the produce function
-     * 
+     *
      * @param arg   The producer object
-     * @return void* 
+     * @return void*
      */
     static void *start_produce(void *arg);
 };

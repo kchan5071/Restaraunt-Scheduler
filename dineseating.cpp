@@ -1,4 +1,7 @@
 
+/*
+  Kai Chan 827673009
+ */
 #include <iostream>
 #include <pthread.h>
 #include <unistd.h>
@@ -24,7 +27,6 @@
 #define GENERAL_TABLE_ARG = "-g"
 #define VIP_ROOM_ARG = "-v"
 
-
 /**
  * @brief   Struct to hold the arguments passed to the threads
  *          this is only used as a neat way to parse args in the main
@@ -43,10 +45,10 @@ typedef struct Thread_Args
 /**
  * @brief   Parse the command line arguments and return a struct
  *          with the values.
- * 
+ *
  * @param argc  Number of arguments
  * @param argv  Array of arguments
- * @return Thread_Args 
+ * @return Thread_Args
  */
 Thread_Args parse_args(int argc, char *argv[])
 {
@@ -88,23 +90,24 @@ Thread_Args parse_args(int argc, char *argv[])
 
 /**
  * @brief   Main function to start the threads and run the simulation
- * 
+ *
  * @param argc  Number of arguments
  * @param argv  Array of arguments
- * @return int 
+ * @return int
  */
-int main(int argc, char* argv[]) {
+int main(int argc, char *argv[])
+{
     // Parse the arguments
     Thread_Args args = parse_args(argc, argv);
     // create the monitor and log helper
-    Log_Helper* log_helper = new Log_Helper();
+    Log_Helper *log_helper = new Log_Helper();
     Monitor mon = Monitor(args.max_productions, log_helper);
 
-    //create producers
+    // create producers
     pthread_t general_producer_thread;
     pthread_t vip_producer_thread;
 
-    //create consumers
+    // create consumers
     pthread_t t_x_consumer_thread;
     pthread_t rev_9_consumer_thread;
 

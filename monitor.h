@@ -1,3 +1,7 @@
+/*
+  Halie Do 827707836
+  Kai Chan 827673009
+ */
 #ifndef MONITOR_H
 #define MONITOR_H
 

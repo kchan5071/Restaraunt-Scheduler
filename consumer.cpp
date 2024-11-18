@@ -1,5 +1,8 @@
+/*
+  Halie Do 827707836
+  Kai Chan 827673009
+ */
 #include "consumer.h"
-
 
 Consumer::Consumer(Monitor *mon, int consumption_time, Consumers type)
 {
@@ -7,7 +10,6 @@ Consumer::Consumer(Monitor *mon, int consumption_time, Consumers type)
     this->consumption_time = consumption_time;
     this->type = type;
 }
-
 
 void Consumer::consume()
 {
@@ -29,7 +31,7 @@ void Consumer::consume()
 }
 
 void *Consumer::start_consume(void *arg)
-{   
+{
     // Start the consume function
     Consumer *c = (Consumer *)arg;
     c->consume();
