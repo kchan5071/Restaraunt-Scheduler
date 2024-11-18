@@ -3,6 +3,7 @@
 
 #include <queue>
 #include <vector>
+#include <cstdlib>
 #include "seating.h"
 
 extern "C"
