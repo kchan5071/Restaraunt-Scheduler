@@ -23,7 +23,7 @@ bool Monitor::produce_item(RequestType type)
 {
     bool produced_item = false;
     pthread_mutex_lock(&mutex);
-    while (is_full() || (type == VIPRoom && current_VIP >= MAX_VIP_REQUESTS))
+    if (is_full() || (type == VIPRoom && current_VIP >= MAX_VIP_REQUESTS))
     {
         waiting_producers++;
         pthread_cond_wait(&available_slots, &mutex);
@@ -51,7 +51,7 @@ RequestType Monitor::consume_item()
     pthread_mutex_lock(&mutex);
     while (buffer_empty())
     {
-        if (buffer_empty() && finished_producing())
+        if (finished_producing())
         {
             pthread_mutex_unlock(&mutex);
             return RequestTypeN;
