@@ -3,7 +3,6 @@
 
 #include "monitor.h"
 #include "seating.h"
-#include "log_helper.h"
 #include <thread>
 #include <chrono>
 
