@@ -1,5 +1,6 @@
 #include "log_helper.h"
 
+
 Log_Helper::Log_Helper()
 {
     produced = std::vector<unsigned int>(2, 0);
@@ -7,28 +8,34 @@ Log_Helper::Log_Helper()
     inRequestQueue = std::vector<unsigned int>(2, 0);
 }
 
-Log_Helper::~Log_Helper()
-{
-}
-
-void Log_Helper::request_added(RequestType request_type)
-{ 
+void Log_Helper::request_added(RequestType request_type) { 
+    // Increment the produced and inRequestQueue counters
     produced[request_type]++;
     inRequestQueue[request_type]++;
+
+    // Output the request added
     output_request_added(request_type, produced.data(), inRequestQueue.data());
 }
 
 void Log_Helper::request_removed(Consumers consumer, RequestType request_type)
 {
+    // Increment the consumed and decrement the inRequestQueue counters
     this->consumed[consumer][request_type]++;
     this->inRequestQueue[request_type]--;
+
+    // Output the request removed
     output_request_removed(consumer, request_type, consumed[consumer].data(), inRequestQueue.data());
 }
 
 void Log_Helper::history()
 {
+    // Output the production history
     unsigned int **consumed = (unsigned int **)calloc(2, sizeof(unsigned int *));
+
+    //split the consumed vector into two arrays
     consumed[0] = this->consumed[0].data();
     consumed[1] = this->consumed[1].data();
+
+    //output the production history
     output_production_history(produced.data(), consumed);
 }
