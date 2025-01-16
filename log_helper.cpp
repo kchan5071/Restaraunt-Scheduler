@@ -6,9 +6,9 @@
 
 Log_Helper::Log_Helper()
 {
-    produced = std::vector<unsigned int>(2, 0);
-    consumed = std::vector<std::vector<unsigned int>>(2, std::vector<unsigned int>(2, 0));
-    inRequestQueue = std::vector<unsigned int>(2, 0);
+    produced = std::vector<unsigned int>(NUMBER_OF_PRODUCERS, 0);
+    consumed = std::vector<std::vector<unsigned int>>(2, std::vector<unsigned int>(NUMBER_OF_CONSUMERS, 0));
+    inRequestQueue = std::vector<unsigned int>(NUMBER_OF_REQUEST_TYPES, 0);
 }
 
 void Log_Helper::request_added(RequestType request_type)
@@ -34,7 +34,7 @@ void Log_Helper::request_removed(Consumers consumer, RequestType request_type)
 void Log_Helper::history()
 {
     // Output the production history
-    unsigned int **consumed = (unsigned int **)calloc(2, sizeof(unsigned int *));
+    unsigned int **consumed = (unsigned int **)calloc(NUMBER_OF_PRODUCERS, sizeof(unsigned int *));
 
     // split the consumed vector into two arrays
     consumed[0] = this->consumed[0].data();

@@ -10,6 +10,10 @@
 #include <cstdlib>
 #include "seating.h"
 
+#define NUMBER_OF_CONSUMERS 2
+#define NUMBER_OF_REQUEST_TYPES 2
+#define NUMBER_OF_PRODUCERS 2
+
 extern "C"
 {
 #include "log.h"
